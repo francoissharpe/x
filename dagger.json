@@ -4,8 +4,8 @@
   "sdk": "go",
   "dependencies": [
     {
-      "name": "gitty",
-      "source": "gitty"
+      "name": "git",
+      "source": "git"
     },
     {
       "name": "ca-certs",

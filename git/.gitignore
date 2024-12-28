@@ -2,3 +2,5 @@
 /internal/dagger
 /internal/querybuilder
 /internal/telemetry
+/go.work
+/go.work.sum
