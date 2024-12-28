@@ -2,6 +2,7 @@ package main
 
 import (
 	"dagger/ca-certs/internal/dagger"
+	"fmt"
 	"path"
 )
 
@@ -23,20 +24,18 @@ type CaCerts struct{}
 func (m *CaCerts) WithCaCerts(
 	// The container to add the CA certificates to.
 	container *dagger.Container,
-	// The list of HTTP urls of CA certificates to add.
-	caCerts []string,
+	// The list of HTTP(S) urls of CA certificates to add.
+	caCertUrls []string,
 	// The directory to store the CA certificates in.
 	// +optional
+	// +default="/usr/local/share/ca-certificates"
 	caCertsDir string,
 ) *dagger.Container {
-	if caCertsDir == "" {
-		caCertsDir = "/usr/local/share/ca-certificates"
-	}
 	caCertsCtr := dag.Container().From("buildpack-deps:bookworm-curl")
-	for _, caCert := range caCerts {
-		certFilename := path.Base(caCert) + ".crt"
+	for _, caCertUrl := range caCertUrls {
+		certFilename := path.Base(caCertUrl) + ".crt" // Force the file extension to be .crt
 		outputPath := path.Join(caCertsDir, certFilename)
-		caCertsCtr = caCertsCtr.WithExec(ShDashC("curl -sSL " + caCert + " -o " + outputPath))
+		caCertsCtr = caCertsCtr.WithExec(ShDashC(fmt.Sprintf("curl -sSL %s -o %s", caCertUrl, outputPath)))
 	}
 
 	caCertsCtr = caCertsCtr.WithExec(ShDashC("update-ca-certificates"))
