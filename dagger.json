@@ -4,6 +4,10 @@
   "sdk": "go",
   "dependencies": [
     {
+      "name": "gitty",
+      "source": "gitty"
+    },
+    {
       "name": "ca-certs",
       "source": "ca-certs"
     }
