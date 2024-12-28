@@ -21,13 +21,13 @@ func convertNewlineStringToSlice(str string) []string {
 	return strings.Split(strings.TrimSpace(str), "\n")
 }
 
-type Git struct{}
+type GitUtils struct{}
 
-func (m *Git) Debug(ctx context.Context, src *dagger.Directory) (string, error) {
+func (m *GitUtils) Debug(ctx context.Context, src *dagger.Directory) (string, error) {
 	return setupGitContainer(src).WithExec([]string{"cat", ".git/HEAD"}).Stdout(ctx)
 }
 
-func (m *Git) GitInfo(ctx context.Context, src *dagger.Directory) (*GitInfo, error) {
+func (m *GitUtils) GitInfo(ctx context.Context, src *dagger.Directory) (*GitInfo, error) {
 	eg, gctx := errgroup.WithContext(ctx)
 
 	results := make(map[string]*string)
