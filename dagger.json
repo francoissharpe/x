@@ -1,0 +1,20 @@
+{
+  "name": "sidekick",
+  "engineVersion": "v0.15.1",
+  "sdk": "go",
+  "dependencies": [
+    {
+      "name": "ca-certs",
+      "source": "ca-certs"
+    },
+    {
+      "name": "git-utils",
+      "source": "git-utils"
+    },
+    {
+      "name": "mkdocs",
+      "source": "mkdocs"
+    }
+  ],
+  "source": ".dagger"
+}

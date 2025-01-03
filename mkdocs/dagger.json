@@ -1,0 +1,5 @@
+{
+  "name": "mkdocs",
+  "engineVersion": "v0.15.1",
+  "sdk": "go"
+}
