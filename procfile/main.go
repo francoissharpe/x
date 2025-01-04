@@ -92,5 +92,9 @@ func (m *Procfile) WithProcfile(
 	if err != nil {
 		fmt.Errorf("failed to parse Procfile: %v", err)
 	}
-	return container.WithNewFile(entryPointPath, createDockerEntryPointSh(procs)).WithEntrypoint([]string{entryPointPath}).WithDefaultArgs([]string{procs[0].Name})
+	entrypointFileOpts := dagger.ContainerWithNewFileOpts{
+		Permissions: 0755,
+	}
+	return container.WithNewFile(entryPointPath, createDockerEntryPointSh(procs), entrypointFileOpts).
+		WithEntrypoint([]string{entryPointPath}).WithDefaultArgs([]string{procs[0].Name})
 }
