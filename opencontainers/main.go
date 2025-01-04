@@ -7,7 +7,20 @@ import (
 type Opencontainers struct{}
 
 func generateImageInfo(
-	created, authors, url, documentation, source, version, revision, vendor, license, refName, title, description, baseDigest, baseName string,
+	created string,
+	authors string,
+	url string,
+	documentation string,
+	source string,
+	version string,
+	revision string,
+	vendor string,
+	license string,
+	refName string,
+	title string,
+	description string,
+	baseDigest string,
+	baseName string,
 ) map[string]string {
 	return map[string]string{
 		"org.opencontainers.image.created":       created,
@@ -27,7 +40,7 @@ func generateImageInfo(
 	}
 }
 
-// Returns a container that echoes whatever string argument is provided
+// Returns a container with the OpenContainers annotations added
 func (m *Opencontainers) WithAnnotations(
 	// Container to be annotated
 	container *dagger.Container,
@@ -100,6 +113,7 @@ func (m *Opencontainers) WithAnnotations(
 	return container
 }
 
+// Returns a container with the OpenContainers labels set
 func (m *Opencontainers) WithLabels(
 	// Container to be annotated
 	container *dagger.Container,

@@ -4,4 +4,7 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "golang.go"
     },
+    "search.exclude": {
+        "**/dagger.gen.go": true
+    },
 }
