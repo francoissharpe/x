@@ -10,14 +10,26 @@ import (
 
 // createDockerEntryPointSh returns a shell script that given an argument will start the process with the given name.
 func createDockerEntryPointSh(procs []Process) string {
-	// TODO: improve this script to handle SIGTERM and other signals and process reaping.
-	// Create a shell script that will start the process with the given name.
 	tmpl := `#!/bin/sh
 set -e
+
+# Function to handle SIGTERM and SIGINT
+_term() {
+  echo "Caught SIGTERM signal!"
+  kill -TERM "$child" 2>/dev/null
+}
+
+# Trap SIGTERM and SIGINT
+trap _term SIGTERM SIGINT
+
+# Start the process based on the argument
 case "$1" in
 {{- range . }}
   {{ .Name }})
-	exec {{ .Command }}
+	echo "Starting {{ .Name }}..."
+	exec {{ .Command }} &
+	child=$!
+	wait "$child"
 	;;
 {{- end }}
   *)
