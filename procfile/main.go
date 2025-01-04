@@ -20,7 +20,7 @@ _term() {
 }
 
 # Trap SIGTERM and SIGINT
-trap _term SIGTERM SIGINT
+trap _term TERM INT
 
 # Start the process based on the argument
 case "$1" in
