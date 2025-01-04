@@ -3,20 +3,17 @@ package main
 import (
 	"context"
 	"dagger/os-info/internal/dagger"
-	"strings"
-)
-
-import (
 	"encoding/json"
+	"strings"
 )
 
 type Summary struct {
 	// Name of the operating system
-	Name           string `json:"name"`
+	Name string `json:"name"`
 	// Pretty name of the operating system
-	PrettyName     string `json:"prettyName"`
+	PrettyName string `json:"prettyName"`
 	// Numeric version of the operating system
-	Version        string `json:"version"`
+	Version string `json:"version"`
 	// Codename of the operating system version
 	VersionCodename string `json:"versionCodename"`
 }
@@ -47,10 +44,9 @@ func (m *OsInfo) Info(ctx context.Context, container *dagger.Container) *Summary
 		}
 	}
 	return &Summary{
-		Name: osReleaseMap["ID"],
-		PrettyName: osReleaseMap["PRETTY_NAME"],
-		Version: osReleaseMap["VERSION_ID"],
+		Name:            osReleaseMap["ID"],
+		PrettyName:      osReleaseMap["PRETTY_NAME"],
+		Version:         osReleaseMap["VERSION_ID"],
 		VersionCodename: osReleaseMap["VERSION_CODENAME"],
 	}
 }
-

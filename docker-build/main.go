@@ -30,14 +30,14 @@ func (m *DockerBuild) Build(
 			return nil, fmt.Errorf("invalid build arg format: %s", arg)
 		}
 		buildArgsSlice = append(buildArgsSlice, dagger.BuildArg{
-			Name:   split[0],
+			Name:  split[0],
 			Value: split[1],
 		})
 	}
 
 	dockerFileBuildOpts := dagger.DirectoryDockerBuildOpts{
 		Dockerfile: dockerFile,
-		BuildArgs: buildArgsSlice,
+		BuildArgs:  buildArgsSlice,
 	}
 	return src.DockerBuild(dockerFileBuildOpts), nil
 }

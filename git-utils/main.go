@@ -4,8 +4,9 @@ import (
 	"context"
 	"dagger/gitty/internal/dagger"
 	"encoding/json"
-	"golang.org/x/sync/errgroup"
 	"strings"
+
+	"golang.org/x/sync/errgroup"
 )
 
 func setupGitContainer(src *dagger.Directory) *dagger.Container {
