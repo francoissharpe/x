@@ -1,0 +1,8 @@
+web: uvicorn main:app
+
+job: python main.py
+
+
+
+
+

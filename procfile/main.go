@@ -64,7 +64,12 @@ func (m *Procfile) Parse(ctx context.Context, procfile *dagger.File) ([]Process,
 		return nil, err
 	}
 	// Parse the procfile and populate the procs slice.
-	for _, line := range strings.Split(procfileContents, "\n") {
+	lines := strings.Split(procfileContents, "\n")
+	for _, line := range lines {
+		// Skip blank lines.
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
 		// Split the line into process name and command.
 		parts := strings.SplitN(line, ":", 2)
 		if len(parts) != 2 {
@@ -73,11 +78,14 @@ func (m *Procfile) Parse(ctx context.Context, procfile *dagger.File) ([]Process,
 		processName, command := strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])
 		procs = append(procs, Process{Name: processName, Command: command})
 	}
+	if len(procs) == 0 {
+		return nil, fmt.Errorf("procfile is empty")
+	}
 	return procs, nil
 }
 
 // Given a Procfile and container, return the container with the entrypoint configured to start with the given process.
-func (m *Procfile) WithProcfile(
+func (m *Procfile) WithEntrypointFromProcfile(
 	ctx context.Context,
 	// The container to configure.
 	container *dagger.Container,
@@ -86,7 +94,7 @@ func (m *Procfile) WithProcfile(
 	// Path to the entrypoint script.
 	// +optional
 	// +default="/docker-entrypoint.sh"
-	entryPointPath string,
+	entrypointPath string,
 ) *dagger.Container {
 	procs, err := m.Parse(ctx, procfile)
 	if err != nil {
@@ -95,6 +103,6 @@ func (m *Procfile) WithProcfile(
 	entrypointFileOpts := dagger.ContainerWithNewFileOpts{
 		Permissions: 0755,
 	}
-	return container.WithNewFile(entryPointPath, createDockerEntryPointSh(procs), entrypointFileOpts).
-		WithEntrypoint([]string{entryPointPath}).WithDefaultArgs([]string{procs[0].Name})
+	return container.WithNewFile(entrypointPath, createDockerEntryPointSh(procs), entrypointFileOpts).
+		WithEntrypoint([]string{entrypointPath}).WithDefaultArgs([]string{procs[0].Name})
 }
